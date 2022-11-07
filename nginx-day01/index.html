@@ -4,17 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="reverse linked list, Hexo">
-    <meta name="description" content="
-#include &amp;lt;func.h&gt;
-
-using namespace std;
-
-struct ListNode
-&amp;#123;
-    double value;
-    ListNode *next;
-    ListNode(d">
+    <meta name="keywords" content="nginx day01, Hexo">
+    <meta name="description" content="configure&amp;#x2F;&amp;#x2F; cd到源代码目录
+&amp;#x2F;&amp;#x2F; 生成makefile文件
+.&amp;#x2F;configure --prefix&amp;#x3D;&amp;#x2F;usr&amp;#x2F;local&amp;#x2F;nginx
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -26,7 +20,7 @@ struct ListNode
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>reverse linked list | Hexo</title>
+    <title>nginx day01 | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -280,12 +274,12 @@ struct ListNode
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">reverse linked list</h1>
+                    <h1 class="description center-align post-title">nginx day01</h1>
                 </div>
             </div>
         </div>
@@ -321,7 +315,7 @@ struct ListNode
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2022-10-30
+                    2022-11-06
                 </div>
                 
 
@@ -345,77 +339,72 @@ struct ListNode
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><img src="/reverse-linked-list/1.jpg"></p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;func.h></span></span>
+                <h2 id="configure"><a href="#configure" class="headerlink" title="configure"></a>configure</h2><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; cd到源代码目录
+&#x2F;&#x2F; 生成makefile文件
+.&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx
+&#x2F;&#x2F; 编译链接.c
+make
+&#x2F;&#x2F; 将生成的文件移到合适位置
+sudo make install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<h2 id="nginx使用流程"><a href="#nginx使用流程" class="headerlink" title="nginx使用流程"></a>nginx使用流程</h2><pre class="line-numbers language-none"><code class="language-none">cd $prefix
+&#x2F;&#x2F; 启动
+sbin&#x2F;nginx
+&#x2F;&#x2F; 关闭
+sbin&#x2F;nginx -s quit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token keyword">struct</span> <span class="token class-name">ListNode</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token keyword">double</span> value<span class="token punctuation">;</span>
-    ListNode <span class="token operator">*</span>next<span class="token punctuation">;</span>
-    <span class="token function">ListNode</span><span class="token punctuation">(</span><span class="token keyword">double</span> value1<span class="token punctuation">,</span> ListNode <span class="token operator">*</span>next1 <span class="token operator">=</span> <span class="token keyword">nullptr</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span>
-        value <span class="token operator">=</span> value1<span class="token punctuation">;</span> 
-        next <span class="token operator">=</span> next1<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<h2 id="默认配置文件"><a href="#默认配置文件" class="headerlink" title="默认配置文件"></a>默认配置文件</h2><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 指定worker进程数，cpu核心数的1~2倍
+worker_processes  1;
+events &#123;
+    &#x2F;&#x2F; 一个worker进程同时能支持的最大连接数
+    worker_connections  1024;
+&#125;
+http &#123;
+    &#x2F;&#x2F; 把另一个文件包含进来
+    include       mime.types;
+    &#x2F;&#x2F; 默认的响应类型
+    default_type  application&#x2F;octet-stream;
+    &#x2F;&#x2F; 调用sendfile函数传输文件
+    sendfile        on;
+    &#x2F;&#x2F; 及复用tcp连接的超时时限
+    keepalive_timeout  65;
+    &#x2F;&#x2F; 虚拟服务端
+    server &#123;
+        listen       80;
+        server_name  localhost;
+        &#x2F;&#x2F; 当有URL的路径部分匹配 &#x2F; 时，
+        &#x2F;&#x2F; 找到服务端的html目录，
+        &#x2F;&#x2F; 访问其中的index.html文件
+        location &#x2F; &#123;
+            root   html;
+            index  index.html index.htm;
+        &#125;
+        &#x2F;&#x2F; HTTP的响应是500 502 503或者是504时，
+        &#x2F;&#x2F; 将URL的路径部分改写成 &#x2F;50x.html 
+        error_page   500 502 503 504  &#x2F;50x.html;
+        &#x2F;&#x2F; 当有URL的路径部分匹配 &#x2F;50x.html 时，
+        &#x2F;&#x2F; 访问服务端的html目录中的50x.html文件
+        location &#x3D; &#x2F;50x.html &#123;
+            root   html;
+        &#125;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token keyword">class</span> <span class="token class-name">Solution</span> 
-<span class="token punctuation">&#123;</span>
-<span class="token keyword">public</span><span class="token operator">:</span>
-    ListNode<span class="token operator">*</span> <span class="token function">reverseList</span><span class="token punctuation">(</span>ListNode<span class="token operator">*</span> head<span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span>
-        ListNode<span class="token operator">*</span> pre <span class="token operator">=</span> <span class="token keyword">nullptr</span><span class="token punctuation">;</span>
-        ListNode<span class="token operator">*</span> cur <span class="token operator">=</span> head<span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span>cur<span class="token punctuation">)</span>
-        <span class="token punctuation">&#123;</span>
-        ListNode<span class="token operator">*</span> tmp <span class="token operator">=</span> cur<span class="token operator">-></span>next<span class="token punctuation">;</span>
-        cur<span class="token operator">-></span>next <span class="token operator">=</span> pre<span class="token punctuation">;</span>
-        pre <span class="token operator">=</span> cur<span class="token punctuation">;</span>
-        cur <span class="token operator">=</span> tmp<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> pre<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<h2 id="main上下文"><a href="#main上下文" class="headerlink" title="main上下文"></a>main上下文</h2><p><img src="/nginx-day01/worker_processes.png" alt="worker_processes"><br><img src="/nginx-day01/error_log.png" alt="error_log"><br><img src="/nginx-day01/pid.png" alt="pid"></p>
+<h2 id="http上下文"><a href="#http上下文" class="headerlink" title="http上下文"></a>http上下文</h2><pre class="line-numbers language-none"><code class="language-none">log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/nginx-day01/access_log.png" alt="access_log"><br><img src="/nginx-day01/new_access.log.png" alt="new_access.log"></p>
+<h2 id="http中最重要的指令"><a href="#http中最重要的指令" class="headerlink" title="http中最重要的指令"></a>http中最重要的指令</h2><p>server –&gt; 虚拟服务端 根据域名:port进行选择<br>location –&gt; url的path部分<br>upstream<br><img src="/nginx-day01/location.png" alt="location"></p>
+<h2 id="用nginx搭建一个静态资源服务器"><a href="#用nginx搭建一个静态资源服务器" class="headerlink" title="用nginx搭建一个静态资源服务器"></a>用nginx搭建一个静态资源服务器</h2><pre class="line-numbers language-none"><code class="language-none">server &#123;
+        listen       80;
+        server_name  reference;
+        location &#x2F;reference &#123;
+                alias reference;
+        &#125;
+    &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/nginx-day01/addr.png"><br><img src="/nginx-day01/alias.png" alt="alias"></p>
 
-<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span>ListNode<span class="token operator">*</span> head1<span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-    ListNode <span class="token operator">*</span>p <span class="token operator">=</span> head1<span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>p <span class="token operator">!=</span> <span class="token keyword">nullptr</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span>
-        cout <span class="token operator">&lt;&lt;</span> p<span class="token operator">-></span>value <span class="token operator">&lt;&lt;</span> <span class="token string">" "</span><span class="token punctuation">;</span>
-        p <span class="token operator">=</span> p<span class="token operator">-></span>next<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token keyword">double</span> number<span class="token punctuation">;</span> <span class="token comment">// Used to read the file</span>
-    ListNode <span class="token operator">*</span>numberList <span class="token operator">=</span> <span class="token keyword">nullptr</span><span class="token punctuation">;</span> <span class="token comment">// List of numbers</span>
-    <span class="token comment">// Open the file</span>
-    ifstream <span class="token function">numberFile</span><span class="token punctuation">(</span><span class="token string">"num.dat"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>numberFile<span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span>
-        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Error in opening the file of numbers."</span><span class="token punctuation">;</span>
-        <span class="token function">exit</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token comment">// Read the file into a linked list</span>
-    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"The contents of the file are: "</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>numberFile <span class="token operator">>></span> number<span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span>
-        <span class="token comment">// Create a node to hold this number</span>
-        numberList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">ListNode</span><span class="token punctuation">(</span>number<span class="token punctuation">,</span> numberList<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token function">print</span><span class="token punctuation">(</span>numberList<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment">// Reverse the linked list</span>
-    cout <span class="token operator">&lt;&lt;</span> endl <span class="token operator">&lt;&lt;</span> <span class="token string">"After reversing: "</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-    Solution r<span class="token punctuation">;</span>
-    <span class="token function">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span><span class="token function">reverseList</span><span class="token punctuation">(</span>numberList<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    cout <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -441,7 +430,7 @@ struct ListNode
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://ayanamilivermore.github.io/reverse-linked-list/">https://ayanamilivermore.github.io/reverse-linked-list/</a>
+                    <a href="https://ayanamilivermore.github.io/nginx-day01/">https://ayanamilivermore.github.io/nginx-day01/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -560,13 +549,13 @@ struct ListNode
                 <i class="far fa-dot-circle"></i>&nbsp;Current
             </div>
             <div class="card">
-                <a href="/reverse-linked-list/">
+                <a href="/nginx-day01/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="reverse linked list">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="nginx day01">
                         
-                        <span class="card-title">reverse linked list</span>
+                        <span class="card-title">nginx day01</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -577,7 +566,7 @@ struct ListNode
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-06
                             </span>
                         <span class="publish-author">
                             
@@ -598,13 +587,13 @@ struct ListNode
                 Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/reverse-linked-list/">
+                <a href="/nginx-day01/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="reverse linked list">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="nginx day01">
                         
-                        <span class="card-title">reverse linked list</span>
+                        <span class="card-title">nginx day01</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -615,7 +604,7 @@ struct ListNode
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-06
                             </span>
                         <span class="publish-author">
                             
