@@ -4,11 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="nginx day01, Joker">
-    <meta name="description" content="configure&amp;#x2F;&amp;#x2F; cd到源代码目录
-&amp;#x2F;&amp;#x2F; 生成makefile文件
-.&amp;#x2F;configure --prefix&amp;#x3D;&amp;#x2F;usr&amp;#x2F;local&amp;#x2F;nginx
-">
+    <meta name="keywords" content="nginx, Joker">
+    <meta name="description" content="Nginx是一款轻量级的Web服务器,Nginx采用了事件驱动模型，每个连接不再会占据一个进程/线程的资源，一般来说只会消耗文件句柄和一些其他必要的资源。每个连接的低内存消耗自然就大大提升了并发量（10000个非活跃的HTTP keepal">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>nginx day01 | Joker</title>
+    <title>nginx | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -274,12 +271,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">nginx day01</h1>
+                    <h1 class="description center-align post-title">nginx</h1>
                 </div>
             </div>
         </div>
@@ -315,7 +312,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2022-11-06
+                    2022-11-18
                 </div>
                 
 
@@ -339,7 +336,19 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="configure"><a href="#configure" class="headerlink" title="configure"></a>configure</h2><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; cd到源代码目录
+                <pre><code>Nginx是一款轻量级的Web服务器,Nginx采用了事件驱动模型，每个连接不再会占据一个进程/线程的资源，一般来说只会消耗文件句柄和一些其他必要的资源。每个连接的低内存消耗自然就大大提升了并发量（10000个非活跃的HTTP keepalive连接大约占据2.5MB内存，单机并发量达到10万以上）。
+</code></pre>
+<h2 id="Nginx的Master-Worker模式"><a href="#Nginx的Master-Worker模式" class="headerlink" title="Nginx的Master-Worker模式"></a>Nginx的Master-Worker模式</h2><pre><code>启动Nginx后，其实就是在80端口启动了Socket服务进行监听
+</code></pre>
+<h3 id="Master进程的作用是？"><a href="#Master进程的作用是？" class="headerlink" title="Master进程的作用是？"></a>Master进程的作用是？</h3><pre><code>读取并验证配置文件nginx.conf；管理worker进程
+</code></pre>
+<h3 id="Worker进程的作用是？"><a href="#Worker进程的作用是？" class="headerlink" title="Worker进程的作用是？"></a>Worker进程的作用是？</h3><pre><code>每一个Worker进程都维护一个线程（避免线程切换），处理连接和请求
+</code></pre>
+<h2 id="Nginx如何做到热部署？"><a href="#Nginx如何做到热部署？" class="headerlink" title="Nginx如何做到热部署？"></a>Nginx如何做到热部署？</h2><pre><code>修改配置文件nginx.conf后，重新生成新的worker进程，当然会以新的配置进行处理请求，而且新的请求必须都交给新的worker进程，至于老的worker进程，等把那些以前的请求处理完毕后，kill掉即可
+</code></pre>
+<h2 id="Nginx如何做到高并发下的高效处理？"><a href="#Nginx如何做到高并发下的高效处理？" class="headerlink" title="Nginx如何做到高并发下的高效处理？"></a>Nginx如何做到高并发下的高效处理？</h2><pre><code>Nginx采用了Linux的epoll模型，epoll模型基于事件驱动机制，它可以监控多个事件是否准备完毕，如果OK，那么放入epoll队列中，这个过程是异步的。worker只需要从epoll队列循环处理即可
+</code></pre>
+<h2 id="configure"><a href="#configure" class="headerlink" title="configure"></a>configure</h2><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; cd到源代码目录
 &#x2F;&#x2F; 生成makefile文件
 .&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx
 &#x2F;&#x2F; 编译链接.c
@@ -390,12 +399,12 @@ http &#123;
     &#125;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="main上下文"><a href="#main上下文" class="headerlink" title="main上下文"></a>main上下文</h2><p><img src="/nginx-day01/worker_processes.png" alt="worker_processes"><br><img src="/nginx-day01/error_log.png" alt="error_log"><br><img src="/nginx-day01/pid.png" alt="pid"></p>
+<h2 id="main上下文"><a href="#main上下文" class="headerlink" title="main上下文"></a>main上下文</h2><p><img src="/nginx/worker_processes.png" alt="worker_processes"><br><img src="/nginx/error_log.png" alt="error_log"><br><img src="/nginx/pid.png" alt="pid"></p>
 <h2 id="http上下文"><a href="#http上下文" class="headerlink" title="http上下文"></a>http上下文</h2><pre class="line-numbers language-none"><code class="language-none">log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
                       &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
                       &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><img src="/nginx-day01/access_log.png" alt="access_log"><br><img src="/nginx-day01/new_access.log.png" alt="new_access.log"></p>
-<h2 id="http中最重要的指令"><a href="#http中最重要的指令" class="headerlink" title="http中最重要的指令"></a>http中最重要的指令</h2><p>server –&gt; 虚拟服务端 根据域名:port进行选择<br>location –&gt; url的path部分<br>upstream<br><img src="/nginx-day01/location.png" alt="location"></p>
+<p><img src="/nginx/access_log.png" alt="access_log"><br><img src="/nginx/new_access.log.png" alt="new_access.log"></p>
+<h2 id="http中最重要的指令"><a href="#http中最重要的指令" class="headerlink" title="http中最重要的指令"></a>http中最重要的指令</h2><p>server –&gt; 虚拟服务端 根据域名:port进行选择<br>location –&gt; url的path部分<br>upstream<br><img src="/nginx/location.png" alt="location"></p>
 <h2 id="用nginx搭建一个静态资源服务器"><a href="#用nginx搭建一个静态资源服务器" class="headerlink" title="用nginx搭建一个静态资源服务器"></a>用nginx搭建一个静态资源服务器</h2><pre class="line-numbers language-none"><code class="language-none">server &#123;
         listen       80;
         server_name  reference;
@@ -403,7 +412,7 @@ http &#123;
                 alias reference;
         &#125;
     &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/nginx-day01/addr.png"><br><img src="/nginx-day01/alias.png" alt="alias"></p>
+<p><img src="/nginx/addr.png"><br><img src="/nginx/alias.png" alt="alias"></p>
 
                 
             </div>
@@ -430,7 +439,7 @@ http &#123;
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://ayanamilivermore.github.io/nginx-day01/">https://ayanamilivermore.github.io/nginx-day01/</a>
+                    <a href="https://ayanamilivermore.github.io/nginx/">https://ayanamilivermore.github.io/nginx/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -549,13 +558,13 @@ http &#123;
                 <i class="far fa-dot-circle"></i>&nbsp;Current
             </div>
             <div class="card">
-                <a href="/nginx-day01/">
+                <a href="/nginx/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="nginx day01">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="nginx">
                         
-                        <span class="card-title">nginx day01</span>
+                        <span class="card-title">nginx</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -566,7 +575,7 @@ http &#123;
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-18
                             </span>
                         <span class="publish-author">
                             
@@ -587,13 +596,13 @@ http &#123;
                 Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/nginx-day01/">
+                <a href="/nginx/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="nginx day01">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="nginx">
                         
-                        <span class="card-title">nginx day01</span>
+                        <span class="card-title">nginx</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -604,7 +613,7 @@ http &#123;
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-18
                             </span>
                         <span class="publish-author">
                             
