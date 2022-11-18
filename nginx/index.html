@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="nginx, Joker">
-    <meta name="description" content="Nginx是一款轻量级的Web服务器,Nginx采用了事件驱动模型，每个连接不再会占据一个进程/线程的资源，一般来说只会消耗文件句柄和一些其他必要的资源。每个连接的低内存消耗自然就大大提升了并发量（10000个非活跃的HTTP keepal">
+    <meta name="description" content="Nginx是一款轻量级的Web服务器,Nginx采用了事件驱动模型，每个连接不再会占据一个进程&amp;#x2F;线程的资源，一般来说只会消耗文件句柄和一些其他必要的资源。每个连接的低内存消耗自然就大大提升了并发量（10000个非活跃的HTTP k">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -336,18 +336,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <pre><code>Nginx是一款轻量级的Web服务器,Nginx采用了事件驱动模型，每个连接不再会占据一个进程/线程的资源，一般来说只会消耗文件句柄和一些其他必要的资源。每个连接的低内存消耗自然就大大提升了并发量（10000个非活跃的HTTP keepalive连接大约占据2.5MB内存，单机并发量达到10万以上）。
-</code></pre>
-<h2 id="Nginx的Master-Worker模式"><a href="#Nginx的Master-Worker模式" class="headerlink" title="Nginx的Master-Worker模式"></a>Nginx的Master-Worker模式</h2><pre><code>启动Nginx后，其实就是在80端口启动了Socket服务进行监听
-</code></pre>
-<h3 id="Master进程的作用是？"><a href="#Master进程的作用是？" class="headerlink" title="Master进程的作用是？"></a>Master进程的作用是？</h3><pre><code>读取并验证配置文件nginx.conf；管理worker进程
-</code></pre>
-<h3 id="Worker进程的作用是？"><a href="#Worker进程的作用是？" class="headerlink" title="Worker进程的作用是？"></a>Worker进程的作用是？</h3><pre><code>每一个Worker进程都维护一个线程（避免线程切换），处理连接和请求
-</code></pre>
-<h2 id="Nginx如何做到热部署？"><a href="#Nginx如何做到热部署？" class="headerlink" title="Nginx如何做到热部署？"></a>Nginx如何做到热部署？</h2><pre><code>修改配置文件nginx.conf后，重新生成新的worker进程，当然会以新的配置进行处理请求，而且新的请求必须都交给新的worker进程，至于老的worker进程，等把那些以前的请求处理完毕后，kill掉即可
-</code></pre>
-<h2 id="Nginx如何做到高并发下的高效处理？"><a href="#Nginx如何做到高并发下的高效处理？" class="headerlink" title="Nginx如何做到高并发下的高效处理？"></a>Nginx如何做到高并发下的高效处理？</h2><pre><code>Nginx采用了Linux的epoll模型，epoll模型基于事件驱动机制，它可以监控多个事件是否准备完毕，如果OK，那么放入epoll队列中，这个过程是异步的。worker只需要从epoll队列循环处理即可
-</code></pre>
+                <p>Nginx是一款轻量级的Web服务器,Nginx采用了事件驱动模型，每个连接不再会占据一个进程&#x2F;线程的资源，一般来说只会消耗文件句柄和一些其他必要的资源。每个连接的低内存消耗自然就大大提升了并发量（10000个非活跃的HTTP keepalive连接大约占据2.5MB内存，单机并发量达到10万以上）。</p>
+<h2 id="Nginx的Master-Worker模式"><a href="#Nginx的Master-Worker模式" class="headerlink" title="Nginx的Master-Worker模式"></a>Nginx的Master-Worker模式</h2><p>启动Nginx后，其实就是在80端口启动了Socket服务进行监听</p>
+<h3 id="Master进程的作用是？"><a href="#Master进程的作用是？" class="headerlink" title="Master进程的作用是？"></a>Master进程的作用是？</h3><p>读取并验证配置文件nginx.conf；管理worker进程</p>
+<h3 id="Worker进程的作用是？"><a href="#Worker进程的作用是？" class="headerlink" title="Worker进程的作用是？"></a>Worker进程的作用是？</h3><p>每一个Worker进程都维护一个线程（避免线程切换），处理连接和请求</p>
+<h2 id="Nginx如何做到热部署？"><a href="#Nginx如何做到热部署？" class="headerlink" title="Nginx如何做到热部署？"></a>Nginx如何做到热部署？</h2><p>修改配置文件nginx.conf后，重新生成新的worker进程，当然会以新的配置进行处理请求，而且新的请求必须都交给新的worker进程，至于老的worker进程，等把那些以前的请求处理完毕后，kill掉即可</p>
+<h2 id="Nginx如何做到高并发下的高效处理？"><a href="#Nginx如何做到高并发下的高效处理？" class="headerlink" title="Nginx如何做到高并发下的高效处理？"></a>Nginx如何做到高并发下的高效处理？</h2><p>Nginx采用了Linux的epoll模型，epoll模型基于事件驱动机制，它可以监控多个事件是否准备完毕，如果OK，那么放入epoll队列中，这个过程是异步的。worker只需要从epoll队列循环处理即可</p>
 <h2 id="configure"><a href="#configure" class="headerlink" title="configure"></a>configure</h2><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; cd到源代码目录
 &#x2F;&#x2F; 生成makefile文件
 .&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx
